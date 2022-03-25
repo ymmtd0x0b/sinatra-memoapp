@@ -1,6 +1,10 @@
 require "sinatra"
 require "sinatra/reloader"
 
+# configure do
+#   enable :method_override
+# end
+
 class Memo
   attr_accessor :id, :title, :content
   
@@ -13,6 +17,7 @@ end
 
 $memo_list = []
 $id = 0
+
 
 get '/' do
   erb :top
@@ -40,7 +45,7 @@ get '/show/:id' do
   erb :show
 end
 
-post '/:id' do
+delete '/:id' do
   target_id = params[:id].to_i
   $memo_list.delete_if { |memo| memo.id == target_id }
 
@@ -54,7 +59,7 @@ get '/edit/:id' do
   erb :edit
 end
 
-post '/edit/:id' do
+put '/edit/:id' do
   target_id = params[:id].to_i
   target_index = $memo_list.find_index { |memo| memo.id == target_id }
   $memo_list[target_index].title = params[:title]

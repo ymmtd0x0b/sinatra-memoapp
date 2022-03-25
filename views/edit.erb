@@ -16,6 +16,7 @@
       <p><input type="submit" name="cancel" value="キャンセル"></p>
     </form>
     <form method="POST" action="/edit/<%= @memo.id %>" id="edit">
+      <input type="hidden" name="_method" value="put">
       <p><input type="submit" name="edit" value="確定"></p>
     </form>
   </section>
