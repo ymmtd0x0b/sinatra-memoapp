@@ -14,7 +14,6 @@ end
 $memo_list = []
 $id = 0
 
-
 get '/' do
   erb :top
 end
