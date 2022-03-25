@@ -1,10 +1,6 @@
 require "sinatra"
 require "sinatra/reloader"
 
-# configure do
-#   enable :method_override
-# end
-
 class Memo
   attr_accessor :id, :title, :content
   
