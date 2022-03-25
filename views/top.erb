@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Top</title>
+</head>
+<body>
+  <header>
+  <h1>Top</h1>
+  <a href="/new">新規作成</a>
+  </header>
+  <section>
+    <ul>
+      <% $memo_list.each do |memo| %>
+        <li><a href="/show/<%= memo.id %>"><%= memo.title %></a></li>
+      <% end %>
+    </ul>
+  </section>
+</body>
+</html>

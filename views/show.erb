@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Show</title>
+</head>
+<body>
+  <h1><%= @memo.title %></h1>
+  <p><%= @memo.content %></p>
+  <form method="get" action="/edit/<%= @memo.id %>">
+    <p><input type="submit" name="edit" value="編集"></p>
+  </form>
+  <form method="post" action="/<%= @memo.id %>">
+    <p><input type="submit" name="delete" value="削除"></p>
+  </form>
+</body>
+</html>
