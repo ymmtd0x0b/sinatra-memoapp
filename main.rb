@@ -1,9 +1,11 @@
-require "sinatra"
-require "sinatra/reloader"
+# frozen_string_literal: true
+
+require 'sinatra'
+require 'sinatra/reloader'
 
 class Memo
   attr_accessor :id, :title, :content
-  
+
   def initialize(id, title, content)
     @id = id
     @title = title
@@ -11,7 +13,7 @@ class Memo
   end
 end
 
-$memo_list = []
+$memo_list = [] # ➜ JSONファイルで読み書きする(疑似DBを作成する)
 $id = 0
 
 get '/' do
