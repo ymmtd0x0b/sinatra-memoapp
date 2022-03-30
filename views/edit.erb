@@ -2,23 +2,28 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="/css/main.css">
   <title>Show</title>
 </head>
 <body>
-  <section>
-      <p>タイトル：<br>
-      <input type="text" name="title" value="<%= @memo.title %>" form="edit">
-      </p>
-      <p>内容：<br>
-      <textarea name="content" id="" cols="30" rows="10" form="edit"><%= @memo.content %></textarea>
-      </p>
-    <form method="GET" action="/">
-      <p><input type="submit" name="cancel" value="キャンセル"></p>
-    </form>
-    <form method="POST" action="/edit/<%= @memo.id %>" id="edit">
-      <input type="hidden" name="_method" value="put">
-      <p><input type="submit" name="edit" value="確定"></p>
-    </form>
+  <header>
+    <h1 class="page-title">Top</h1>
+  </header>
+  <section class="main-field">
+    <h2>メモアプリ</h2>
+    <div class="input-field">
+      <input type="text" name="title" value="<%= @memo["title"] %>" form="edit" class="text-field">
+      <textarea name="content" id="" cols="20" rows="5" form="edit" class="text-field"><%= @memo["content"] %></textarea>
+      <div class="bottom-button">
+        <div class="pseudo-button button">
+          <a href="/">キャンセル</a>
+        </div>
+        <form method="POST" action="/edit/<%= @memo["id"] %>" id="edit">
+          <input type="hidden" name="_method" value="patch">
+          <p><input type="submit" name="edit" value="確定" class="button"></p>
+        </form>
+      </div>
+    </div>
   </section>
 </body>
 </html>

@@ -2,17 +2,21 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="/css/main.css">
   <title>Top</title>
 </head>
 <body>
   <header>
-  <h1>Top</h1>
-  <a href="/new">新規作成</a>
+    <h1 class="page-title">Top</h1>
   </header>
-  <section>
+  <section class="main-field">
+    <h2>メモアプリ</h2>
+    <div class="create-button pseudo-button button">
+      <a href="/new">新規作成</a>
+    </div>
     <ul>
-      <% $memo_list.each do |memo| %>
-        <li><a href="/show/<%= memo.id %>"><%= memo.title %></a></li>
+      <% @memo_list.each do |memo| %>
+        <li><a href="/show/<%= memo["id"] %>"><%= memo["title"] %></a></li>
       <% end %>
     </ul>
   </section>

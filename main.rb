@@ -2,21 +2,20 @@
 
 require 'sinatra'
 require 'sinatra/reloader'
+require 'json'
 
-class Memo
-  attr_accessor :id, :title, :content
-
-  def initialize(id, title, content)
-    @id = id
-    @title = title
-    @content = content
-  end
-end
-
-$memo_list = [] # ➜ JSONファイルで読み書きする(疑似DBを作成する)
-$id = 0
+JSON_FILE_NAME = 'memo_data.json'
+ESCAPE_PATTERN = {
+  '<' => '&lt;',
+  '>' => '&gt;',
+  '\"' => '&quot;',
+  '&' => '&amp;',
+  '\'' => '&#39;'
+}.freeze
 
 get '/' do
+  @memo_list = json_data['memo_list']
+
   erb :top
 end
 
@@ -25,42 +24,59 @@ get '/new' do
 end
 
 post '/new' do
-  $id += 1
-  title = params[:title]
-  content = params[:content]
-  memo = Memo.new($id, title, content)
-  $memo_list << memo
+  memo_data = json_data
+  memo_data['id'] += 1
+  new_memo = { id: memo_data['id'],
+               title: sanitize(params[:title]),
+               content: sanitize(params[:content]) }
+  memo_data['memo_list'] << new_memo
+  to_json_file(memo_data)
 
   redirect '/'
-  erb :top
 end
 
 get '/show/:id' do
   target_id = params[:id].to_i
-  @memo = $memo_list.find { |memo| memo.id == target_id }
+  @memo = json_data['memo_list'].find { |memo| memo['id'] == target_id }
 
   erb :show
 end
 
 delete '/:id' do
+  memo_data = json_data
   target_id = params[:id].to_i
-  $memo_list.delete_if { |memo| memo.id == target_id }
+  memo_data['memo_list'].delete_if { |memo| memo['id'] == target_id }
+  to_json_file(memo_data)
 
   redirect '/'
 end
 
 get '/edit/:id' do
   target_id = params[:id].to_i
-  @memo = $memo_list.find { |memo| memo.id == target_id }
+  @memo = json_data['memo_list'].find { |memo| memo['id'] == target_id }
 
   erb :edit
 end
 
-put '/edit/:id' do
+patch '/edit/:id' do
   target_id = params[:id].to_i
-  target_index = $memo_list.find_index { |memo| memo.id == target_id }
-  $memo_list[target_index].title = params[:title]
-  $memo_list[target_index].content = params[:content]
+  memo_data = json_data
+  index = memo_data['memo_list'].find_index { |memo| memo['id'] == target_id }
+  memo_data['memo_list'][index]['title'] = sanitize(params[:title])
+  memo_data['memo_list'][index]['content'] = sanitize(params[:content])
+  to_json_file(memo_data)
 
   redirect '/'
+end
+
+def json_data
+  JSON.parse(File.read(JSON_FILE_NAME))
+end
+
+def to_json_file(data)
+  File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(data)) }
+end
+
+def sanitize(input_data)
+  input_data.to_s.gsub(/([<>"&'])/, ESCAPE_PATTERN)
 end
