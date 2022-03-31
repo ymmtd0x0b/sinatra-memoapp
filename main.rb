@@ -8,7 +8,7 @@ JSON_FILE_NAME = 'memo_data.json'
 ESCAPE_PATTERN = {
   '<' => '&lt;',
   '>' => '&gt;',
-  '\"' => '&quot;',
+  '"' => '&quot;',
   '&' => '&amp;',
   '\'' => '&#39;'
 }.freeze

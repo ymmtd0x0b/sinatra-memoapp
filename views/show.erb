@@ -12,7 +12,7 @@
   <section class="main-field">
     <h2>メモアプリ</h2>
     <h3 class="memo-title"><%= @memo["title"] %></h3>
-    <p class="memo-content"><%= @memo["content"] %></p>
+    <pre class="memo-content"><%= @memo["content"] %></pre>
     <div class="bottom-button">
       <form method="get" action="/edit/<%= @memo["id"] %>">
         <p><input type="submit" name="edit" value="編集" class="button"></p>
