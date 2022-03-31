@@ -11,13 +11,13 @@
   </header>
   <section class="main-field">
     <h2>メモアプリ</h2>
-    <h3 class="memo-title"><%= @memo["title"] %></h3>
-    <pre class="memo-content"><%= @memo["content"] %></pre>
+    <h3 class="memo-title"><%= @memo.title %></h3>
+    <pre class="memo-content"><%= @memo.content %></pre>
     <div class="bottom-button">
-      <form method="get" action="/edit/<%= @memo["id"] %>">
+      <form method="get" action="/edit/<%= @memo.id %>">
         <p><input type="submit" name="edit" value="編集" class="button"></p>
       </form>
-      <form method="post" action="/<%= @memo["id"] %>">
+      <form method="post" action="/<%= @memo.id %>">
         <input type="hidden" name="_method" value="delete">
         <p><input type="submit" name="delete" value="削除" class="button"></p>
       </form>

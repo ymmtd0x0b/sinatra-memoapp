@@ -14,7 +14,7 @@ ESCAPE_PATTERN = {
 }.freeze
 
 get '/' do
-  @memo_list = json_data['memo_list']
+  @memo_list = Memo.all
 
   erb :top
 end
@@ -24,59 +24,86 @@ get '/new' do
 end
 
 post '/new' do
-  memo_data = json_data
-  memo_data['id'] += 1
-  new_memo = { id: memo_data['id'],
-               title: sanitize(params[:title]),
-               content: sanitize(params[:content]) }
-  memo_data['memo_list'] << new_memo
-  to_json_file(memo_data)
+  Memo.add(params[:title], params[:content])
 
   redirect '/'
 end
 
 get '/show/:id' do
   target_id = params[:id].to_i
-  @memo = json_data['memo_list'].find { |memo| memo['id'] == target_id }
+  @memo = Memo.find(target_id)
 
   erb :show
 end
 
 delete '/:id' do
-  memo_data = json_data
-  target_id = params[:id].to_i
-  memo_data['memo_list'].delete_if { |memo| memo['id'] == target_id }
-  to_json_file(memo_data)
+  target_id = params[:id].to_i - 1
+
+  Memo.delete(target_id)
 
   redirect '/'
 end
 
 get '/edit/:id' do
-  target_id = params[:id].to_i
-  @memo = json_data['memo_list'].find { |memo| memo['id'] == target_id }
+  target_id = params[:id].to_i - 1
+  @memo = Memo.find(target_id)
 
   erb :edit
 end
 
 patch '/edit/:id' do
-  target_id = params[:id].to_i
-  memo_data = json_data
-  index = memo_data['memo_list'].find_index { |memo| memo['id'] == target_id }
-  memo_data['memo_list'][index]['title'] = sanitize(params[:title])
-  memo_data['memo_list'][index]['content'] = sanitize(params[:content])
-  to_json_file(memo_data)
+  target_id = params[:id].to_i - 1
+  Memo.edit(target_id, params[:title], params[:content])
 
   redirect '/'
 end
 
-def json_data
-  JSON.parse(File.read(JSON_FILE_NAME))
-end
+class Memo
+  attr_accessor :id, :title, :content
 
-def to_json_file(data)
-  File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(data)) }
-end
+  def initialize(id, title, content)
+    @id = id
+    @title = title
+    @content = content
+  end
 
-def sanitize(input_data)
-  input_data.to_s.gsub(/([<>"&'])/, ESCAPE_PATTERN)
+  def self.all
+    memo_list = access_database('*')
+    memo_list.map do |memo|
+      Memo.new(memo['id'], memo['title'], memo['content'])
+    end
+  end
+
+  def self.find(target_id)
+    memo = access_database(target_id)
+    Memo.new(memo['id'], memo['title'], memo['content'])
+  end
+
+  def self.add(title, content)
+    memo_list = access_database('*')
+    id = memo_list.length + 1
+    title = sanitize(title)
+    content = sanitize(content)
+    memo_list << { id: id, title: title, content: content }
+    File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_list)) }
+  end
+
+  def self.delete(target_id)
+    memo_list = access_database('*')
+    memo_list.delete_at(target_id)
+    File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_list)) }
+  end
+
+  def self.access_database(target_id)
+    memo_list = JSON.parse(File.read(JSON_FILE_NAME))
+    if target_id == '*'
+      memo_list
+    else
+      memo_list.find { |memo| memo['id'] == target_id }
+    end
+  end
+
+  def self.sanitize(input_data)
+    input_data.to_s.gsub(/([<>"&'])/, ESCAPE_PATTERN)
+  end
 end
