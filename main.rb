@@ -37,7 +37,7 @@ get '/show/:id' do
 end
 
 delete '/:id' do
-  target_id = params[:id].to_i - 1
+  target_id = params[:id].to_i
 
   Memo.delete(target_id)
 
@@ -45,14 +45,14 @@ delete '/:id' do
 end
 
 get '/edit/:id' do
-  target_id = params[:id].to_i - 1
+  target_id = params[:id].to_i
   @memo = Memo.find(target_id)
 
   erb :edit
 end
 
 patch '/edit/:id' do
-  target_id = params[:id].to_i - 1
+  target_id = params[:id].to_i
   Memo.edit(target_id, params[:title], params[:content])
 
   redirect '/'
@@ -90,7 +90,15 @@ class Memo
 
   def self.delete(target_id)
     memo_list = access_database('*')
-    memo_list.delete_at(target_id)
+    memo_list.delete_at(target_id - 1)
+    File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_list)) }
+  end
+
+  def self.edit(target_id, title, content)
+    memo_list = JSON.parse(File.read(JSON_FILE_NAME))
+    id = target_id - 1
+    memo_list[id]['title'] = sanitize(title)
+    memo_list[id]['content'] = sanitize(content)
     File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_list)) }
   end
 
@@ -99,7 +107,7 @@ class Memo
     if target_id == '*'
       memo_list
     else
-      memo_list.find { |memo| memo['id'] == target_id }
+      memo_list[target_id - 1]
     end
   end
 
