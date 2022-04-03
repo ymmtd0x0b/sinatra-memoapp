@@ -58,7 +58,7 @@ patch '/edit/:id' do
 end
 
 class Memo
-  attr_accessor :id, :title, :content
+  attr_reader :id, :title, :content
 
   def initialize(id, title, content)
     @id = id
