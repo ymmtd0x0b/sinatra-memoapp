@@ -95,7 +95,7 @@ class Memo
   end
 
   def self.edit(target_id, title, content)
-    memo_list = JSON.parse(File.read(JSON_FILE_NAME))
+    memo_list = access_database('*')
     id = target_id - 1
     memo_list[id]['title'] = sanitize(title)
     memo_list[id]['content'] = sanitize(content)
