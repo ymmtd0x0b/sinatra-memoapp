@@ -57,60 +57,44 @@ patch '/edit/:id' do
   redirect '/'
 end
 
-class Memo
-  attr_reader :id, :title, :content
-
-  def initialize(id, title, content)
-    @id = id
-    @title = title
-    @content = content
-  end
-
-  def self.all
-    memo_list = access_database('*')
-    memo_list.map do |memo|
-      Memo.new(memo['id'], memo['title'], memo['content'])
+module Memo
+  class << self
+    def all
+      JSON.parse(File.read(JSON_FILE_NAME))
     end
-  end
 
-  def self.find(target_id)
-    memo = access_database(target_id)
-    Memo.new(memo['id'], memo['title'], memo['content'])
-  end
-
-  def self.add(title, content)
-    memo_list = access_database('*')
-    id = memo_list.length + 1
-    title = sanitize(title)
-    content = sanitize(content)
-    memo_list << { id: id, title: title, content: content }
-    File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_list)) }
-  end
-
-  def self.delete(target_id)
-    memo_list = access_database('*')
-    memo_list.delete_at(target_id - 1)
-    File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_list)) }
-  end
-
-  def self.edit(target_id, title, content)
-    memo_list = access_database('*')
-    id = target_id - 1
-    memo_list[id]['title'] = sanitize(title)
-    memo_list[id]['content'] = sanitize(content)
-    File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_list)) }
-  end
-
-  def self.access_database(target_id)
-    memo_list = JSON.parse(File.read(JSON_FILE_NAME))
-    if target_id == '*'
-      memo_list
-    else
+    def find(target_id)
+      memo_list = JSON.parse(File.read(JSON_FILE_NAME))
       memo_list[target_id - 1]
     end
+
+    def add(title, content)
+      memo_list = JSON.parse(File.read(JSON_FILE_NAME))
+      id = memo_list.length + 1
+      title = sanitize(title)
+      content = sanitize(content)
+      memo_list << { id: id, title: title, content: content }
+      File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_list)) }
+    end
+
+    def delete(target_id)
+      memo_list = JSON.parse(File.read(JSON_FILE_NAME))
+      memo_list.delete_at(target_id - 1)
+      File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_list)) }
+    end
+
+    def edit(target_id, title, content)
+      memo_list = JSON.parse(File.read(JSON_FILE_NAME))
+      id = target_id - 1
+      memo_list[id]['title'] = sanitize(title)
+      memo_list[id]['content'] = sanitize(content)
+      File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_list)) }
+    end
+
+    def sanitize(input_data)
+      input_data.to_s.gsub(/([<>"&'])/, ESCAPE_PATTERN)
+    end
   end
 
-  def self.sanitize(input_data)
-    input_data.to_s.gsub(/([<>"&'])/, ESCAPE_PATTERN)
-  end
+  private_class_method :sanitize
 end

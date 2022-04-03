@@ -16,7 +16,7 @@
     </div>
     <ul>
       <% @memo_list.each do |memo| %>
-        <li><a href="/show/<%= memo.id %>"><%= memo.title %></a></li>
+        <li><a href="/show/<%= memo['id'] %>"><%= memo['title'] %></a></li>
       <% end %>
     </ul>
   </section>
