@@ -4,15 +4,6 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
 
-JSON_FILE_NAME = 'memo_data.json'
-ESCAPE_PATTERN = {
-  '<' => '&lt;',
-  '>' => '&gt;',
-  '"' => '&quot;',
-  '&' => '&amp;',
-  '\'' => '&#39;'
-}.freeze
-
 get '/' do
   @memo_list = Memo.all
 
@@ -58,6 +49,15 @@ patch '/edit/:id' do
 end
 
 module Memo
+  JSON_FILE_NAME = 'memo_data.json'
+  ESCAPE_PATTERN = {
+    '<' => '&lt;',
+    '>' => '&gt;',
+    '"' => '&quot;',
+    '&' => '&amp;',
+    '\'' => '&#39;'
+  }.freeze
+
   class << self
     def all
       JSON.parse(File.read(JSON_FILE_NAME))
