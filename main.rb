@@ -38,7 +38,6 @@ end
 
 delete '/:id' do
   target_id = params[:id].to_i
-
   Memo.delete(target_id)
 
   redirect '/'
