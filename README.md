@@ -12,7 +12,7 @@ $ cd <作成したディレクトリ名>
 クローンを作成する
 
 ```bash
-$ git pull https://github.com/ymmtd0x0b/sinatra-memoapp.git
+$ git clone https://github.com/ymmtd0x0b/sinatra-memoapp.git
 ```
 
 アプリのあるフォルダへ移動する
@@ -29,15 +29,9 @@ $ bundle install
 
 ## 起動
 
-`memo_appフォルダ`へ移動する
-
-```bash
-$ cd memo_app
-```
-
 以下のコマンドでアプリを起動する
 ```bash
-$ bundle exec ruby main.rb -p 4567
+$ bundle exec ruby main.rb
 ```
 
 http://localhost:4567 にアクセスするかブラウザのURLへ直接入力する
