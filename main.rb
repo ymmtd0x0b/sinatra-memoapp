@@ -55,35 +55,36 @@ module Memo
 
   class << self
     def all
-      JSON.parse(File.read(JSON_FILE_NAME))
+      database = JSON.parse(File.read(JSON_FILE_NAME))
+      database['memo_list']
     end
 
     def find(target_id)
-      memo_list = JSON.parse(File.read(JSON_FILE_NAME))
-      memo_list[target_id - 1]
+      database = JSON.parse(File.read(JSON_FILE_NAME))
+      database['memo_list'].find { |memo| memo['id'] == target_id }
     end
 
     def add(title, content)
-      memo_list = JSON.parse(File.read(JSON_FILE_NAME))
-      id = memo_list.length + 1
+      database = JSON.parse(File.read(JSON_FILE_NAME))
+      id = database['id_counter'] += 1
       title = sanitize(title)
       content = sanitize(content)
-      memo_list << { id: id, title: title, content: content }
-      File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_list)) }
+      database['memo_list'] << { id: id, title: title, content: content }
+      File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(database)) }
     end
 
     def delete(target_id)
-      memo_list = JSON.parse(File.read(JSON_FILE_NAME))
-      memo_list.delete_at(target_id - 1)
-      File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_list)) }
+      database = JSON.parse(File.read(JSON_FILE_NAME))
+      database['memo_list'].delete_if { |memo| memo['id'] == target_id }
+      File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(database)) }
     end
 
     def edit(target_id, title, content)
-      memo_list = JSON.parse(File.read(JSON_FILE_NAME))
-      id = target_id - 1
-      memo_list[id]['title'] = sanitize(title)
-      memo_list[id]['content'] = sanitize(content)
-      File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_list)) }
+      database = JSON.parse(File.read(JSON_FILE_NAME))
+      index = database['memo_list'].find_index { |memo| memo['id'] == target_id }
+      database['memo_list'][index]['title'] = sanitize(title)
+      database['memo_list'][index]['content'] = sanitize(content)
+      File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(database)) }
     end
 
     def sanitize(input_data)
