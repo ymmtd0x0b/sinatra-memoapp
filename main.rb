@@ -60,34 +60,34 @@ module Memo
 
   class << self
     def all
-      database = JSON.parse(File.read(JSON_FILE_NAME))
-      database['memo_list']
+      memo_data = JSON.parse(File.read(JSON_FILE_NAME))
+      memo_data['memo_list']
     end
 
     def find(target_id)
-      database = JSON.parse(File.read(JSON_FILE_NAME))
-      database['memo_list'].find { |memo| memo['id'] == target_id }
+      memo_data = JSON.parse(File.read(JSON_FILE_NAME))
+      memo_data['memo_list'].find { |memo| memo['id'] == target_id }
     end
 
     def add(title, content)
-      database = JSON.parse(File.read(JSON_FILE_NAME))
-      id = database['id_counter'] += 1
-      database['memo_list'] << { id: id, title: title, content: content }
-      File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(database)) }
+      memo_data = JSON.parse(File.read(JSON_FILE_NAME))
+      id = memo_data['id_counter'] += 1
+      memo_data['memo_list'] << { id: id, title: title, content: content }
+      File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_data)) }
     end
 
     def delete(target_id)
-      database = JSON.parse(File.read(JSON_FILE_NAME))
-      database['memo_list'].delete_if { |memo| memo['id'] == target_id }
-      File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(database)) }
+      memo_data = JSON.parse(File.read(JSON_FILE_NAME))
+      memo_data['memo_list'].delete_if { |memo| memo['id'] == target_id }
+      File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_data)) }
     end
 
     def edit(target_id, title, content)
-      database = JSON.parse(File.read(JSON_FILE_NAME))
-      index = database['memo_list'].find_index { |memo| memo['id'] == target_id }
-      database['memo_list'][index]['title'] = title
-      database['memo_list'][index]['content'] = content
-      File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(database)) }
+      memo_data = JSON.parse(File.read(JSON_FILE_NAME))
+      index = memo_data['memo_list'].find_index { |memo| memo['id'] == target_id }
+      memo_data['memo_list'][index]['title'] = title
+      memo_data['memo_list'][index]['content'] = content
+      File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_data)) }
     end
   end
 end
