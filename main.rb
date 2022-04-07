@@ -10,38 +10,38 @@ get '/' do
   erb :top
 end
 
-get '/new' do
-  erb :new
+get '/memos' do
+  erb :template_memo
 end
 
-post '/new' do
+post '/memos' do
   Memo.add(params[:title], params[:content])
 
   redirect '/'
 end
 
-get '/show/:id' do
+get '/memos/:id' do
   target_id = params[:id].to_i
   @memo = Memo.find(target_id)
 
-  erb :show
+  erb :show_memo
 end
 
-delete '/:id' do
+delete '/memos/:id' do
   target_id = params[:id].to_i
   Memo.delete(target_id)
 
   redirect '/'
 end
 
-get '/edit/:id' do
+get '/memos/edit/:id' do
   target_id = params[:id].to_i
   @memo = Memo.find(target_id)
 
-  erb :edit
+  erb :edit_memo
 end
 
-patch '/edit/:id' do
+patch '/memos/:id' do
   target_id = params[:id].to_i
   Memo.edit(target_id, params[:title], params[:content])
 
