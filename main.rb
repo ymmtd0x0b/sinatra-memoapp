@@ -2,7 +2,9 @@
 
 require 'sinatra'
 require 'sinatra/reloader'
+require 'erb'
 require 'json'
+include ERB::Util
 
 get '/' do
   @memo_list = Memo.all
@@ -50,13 +52,6 @@ end
 
 module Memo
   JSON_FILE_NAME = 'memo_data.json'
-  ESCAPE_PATTERN = {
-    '<' => '&lt;',
-    '>' => '&gt;',
-    '"' => '&quot;',
-    '&' => '&amp;',
-    '\'' => '&#39;'
-  }.freeze
 
   class << self
     def all
@@ -92,7 +87,7 @@ module Memo
     end
 
     def sanitize(input_data)
-      input_data.to_s.gsub(/([<>"&'])/, ESCAPE_PATTERN)
+      html_escape(input_data)
     end
   end
 
