@@ -4,7 +4,6 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'erb'
 require 'json'
-include ERB::Util
 
 get '/' do
   @memo_list = Memo.all
@@ -88,5 +87,5 @@ module Memo
 end
 
 def sanitize(input_data)
-  html_escape(input_data)
+  ERB::Util.html_escape(input_data)
 end
