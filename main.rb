@@ -12,6 +12,12 @@ get '/' do
 end
 
 get '/memos' do
+  @memo_list = Memo.all
+
+  redirect '/'
+end
+
+get '/memos/template' do
   erb :template_memo
 end
 
