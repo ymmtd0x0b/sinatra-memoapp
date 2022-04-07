@@ -67,8 +67,6 @@ module Memo
     def add(title, content)
       database = JSON.parse(File.read(JSON_FILE_NAME))
       id = database['id_counter'] += 1
-      title = sanitize(title)
-      content = sanitize(content)
       database['memo_list'] << { id: id, title: title, content: content }
       File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(database)) }
     end
@@ -82,15 +80,13 @@ module Memo
     def edit(target_id, title, content)
       database = JSON.parse(File.read(JSON_FILE_NAME))
       index = database['memo_list'].find_index { |memo| memo['id'] == target_id }
-      database['memo_list'][index]['title'] = sanitize(title)
-      database['memo_list'][index]['content'] = sanitize(content)
+      database['memo_list'][index]['title'] = title
+      database['memo_list'][index]['content'] = content
       File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(database)) }
     end
-
-    def sanitize(input_data)
-      html_escape(input_data)
-    end
   end
+end
 
-  private_class_method :sanitize
+def sanitize(input_data)
+  html_escape(input_data)
 end
