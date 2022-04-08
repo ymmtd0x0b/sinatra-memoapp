@@ -1,5 +1,5 @@
 {
-  "id_counter": 10,
+  "id_counter": 3,
   "memo_list": [
     {
       "id": 1,
@@ -15,21 +15,6 @@
       "id": 3,
       "title": "XSS対策",
       "content": "&lt;\r\n&gt;\r\n&quot;\r\n&amp;\r\n&#39;"
-    },
-    {
-      "id": 8,
-      "title": "c",
-      "content": "ccc"
-    },
-    {
-      "id": 9,
-      "title": "b",
-      "content": "bbb"
-    },
-    {
-      "id": 10,
-      "title": "a",
-      "content": "aaa"
     }
   ]
 }

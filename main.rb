@@ -58,33 +58,33 @@ module Memo
 
   class << self
     def all
-      memo_data = JSON.parse(File.read(JSON_FILE_NAME))
-      memo_data['memo_list']
+      memo_data = JSON.parse(File.read(JSON_FILE_NAME), symbolize_names: true)
+      memo_data[:memo_list]
     end
 
     def find(target_id)
-      memo_data = JSON.parse(File.read(JSON_FILE_NAME))
-      memo_data['memo_list'].find { |memo| memo['id'] == target_id }
+      memo_data = JSON.parse(File.read(JSON_FILE_NAME), symbolize_names: true)
+      memo_data[:memo_list].find { |memo| memo[:id] == target_id }
     end
 
     def add(title, content)
-      memo_data = JSON.parse(File.read(JSON_FILE_NAME))
-      id = memo_data['id_counter'] += 1
-      memo_data['memo_list'] << { id: id, title: title, content: content }
+      memo_data = JSON.parse(File.read(JSON_FILE_NAME), symbolize_names: true)
+      id = memo_data[:id_counter] += 1
+      memo_data[:memo_list] << { id: id, title: title, content: content }
       File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_data)) }
     end
 
     def delete(target_id)
-      memo_data = JSON.parse(File.read(JSON_FILE_NAME))
-      memo_data['memo_list'].delete_if { |memo| memo['id'] == target_id }
+      memo_data = JSON.parse(File.read(JSON_FILE_NAME), symbolize_names: true)
+      memo_data[:memo_list].delete_if { |memo| memo[:id] == target_id }
       File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_data)) }
     end
 
     def edit(target_id, title, content)
-      memo_data = JSON.parse(File.read(JSON_FILE_NAME))
-      index = memo_data['memo_list'].find_index { |memo| memo['id'] == target_id }
-      memo_data['memo_list'][index]['title'] = title
-      memo_data['memo_list'][index]['content'] = content
+      memo_data = JSON.parse(File.read(JSON_FILE_NAME), symbolize_names: true)
+      index = memo_data[:memo_list].find_index { |memo| memo[:id] == target_id }
+      memo_data[:memo_list][index][:title] = title
+      memo_data[:memo_list][index][:content] = content
       File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_data)) }
     end
   end

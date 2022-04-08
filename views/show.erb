@@ -11,11 +11,11 @@
   </header>
   <section class="main-field">
     <h2>メモアプリ</h2>
-    <h3 class="memo-title"><%= sanitize(@memo['title']) %></h3>
-    <pre class="memo-content"><%= sanitize(@memo['content']) %></pre>
+    <h3 class="memo-title"><%= sanitize(@memo[:title]) %></h3>
+    <pre class="memo-content"><%= sanitize(@memo[:content]) %></pre>
     <div class="bottom-button">
-      <p><a href="/memos/<%= @memo['id'] %>/edit"><input type="button" name="edit" value="編集" class="button"></a></p>
-      <form method="post" action="/memos/<%= @memo['id'] %>">
+      <p><a href="/memos/<%= @memo[:id] %>/edit"><input type="button" name="edit" value="編集" class="button"></a></p>
+      <form method="post" action="/memos/<%= @memo[:id] %>">
         <input type="hidden" name="_method" value="delete">
         <p><input type="submit" name="delete" value="削除" class="button"></p>
       </form>
