@@ -75,7 +75,7 @@ p, form {
 
 h2 {
   font-size: 30px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .main-field {
@@ -91,21 +91,6 @@ h2 {
   position: absolute;
   top: 10px;
   right: 30px;
-}
-
-.pseudo-button {
-  text-align: center;
-  line-height: 35px;
-}
-
-.pseudo-button a {
-  text-decoration: none;
-}
-
-.pseudo-button a:visited,
-.pseudo-button a:hover,
-.pseudo-button a:active {
-  color: inherit;
 }
 
 ul {

@@ -11,9 +11,7 @@
   </header>
   <section class="main-field">
     <h2>メモアプリ</h2>
-    <div class="create-button pseudo-button button">
-      <a href="/memos/template">新規作成</a>
-    </div>
+    <p><a href="/memos/new"><input type="button" name="new" value="新規作成" class="create-button button"></a></p>
     <ul>
       <% @memo_list.each do |memo| %>
         <li><a href="/memos/<%= memo['id'] %>"><%= sanitize(memo['title']) %></a></li>

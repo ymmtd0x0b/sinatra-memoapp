@@ -12,13 +12,11 @@ get '/' do
 end
 
 get '/memos' do
-  @memo_list = Memo.all
-
   redirect '/'
 end
 
-get '/memos/template' do
-  erb :template_memo
+get '/memos/new' do
+  erb :new
 end
 
 post '/memos' do
@@ -31,7 +29,7 @@ get '/memos/:id' do
   target_id = params[:id].to_i
   @memo = Memo.find(target_id)
 
-  erb :show_memo
+  erb :show
 end
 
 delete '/memos/:id' do
@@ -41,11 +39,11 @@ delete '/memos/:id' do
   redirect '/'
 end
 
-get '/memos/edit/:id' do
+get '/memos/:id/edit' do
   target_id = params[:id].to_i
   @memo = Memo.find(target_id)
 
-  erb :edit_memo
+  erb :edit
 end
 
 patch '/memos/:id' do
