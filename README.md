@@ -84,7 +84,7 @@ $ vim .pgpass
 
 # vim画面
 1 # hostname:port:database:username:password
-2 localhost:5432:memo_app:memoapp_user:[ユーザーのパスワード]
+2 localhost:5432:memo_app:memoapp_user:[4.で指定したパスワード]
 ~
 ~
 ~
