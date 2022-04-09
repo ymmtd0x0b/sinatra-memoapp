@@ -12,7 +12,7 @@ $ cd <作成したディレクトリ名>
 クローンを作成する
 
 ```bash
-$ git clone -b memo-app https://github.com/ymmtd0x0b/sinatra-memoapp.git
+$ git clone https://github.com/ymmtd0x0b/sinatra-memoapp.git
 ```
 
 アプリのあるフォルダへ移動する
