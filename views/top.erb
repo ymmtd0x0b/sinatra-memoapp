@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Top</title>
+</head>
+<body>
+  <header>
+    <h1 class="page-title">Top</h1>
+  </header>
+  <section class="main-field">
+    <h2>メモアプリ</h2>
+    <p><a href="/memos/new"><input type="button" name="new" value="新規作成" class="create-button button"></a></p>
+    <ul>
+      <% @memo_list.each do |memo| %>
+        <li><a href="/memos/<%= memo[:id] %>"><%= sanitize(memo[:title]) %></a></li>
+      <% end %>
+    </ul>
+  </section>
+</body>
+</html>

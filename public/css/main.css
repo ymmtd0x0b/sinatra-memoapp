@@ -1,0 +1,149 @@
+/*
+////////////////////////////////////////
+reset.css を読み込んで全てのスタイルをなくす
+////////////////////////////////////////
+*/
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/*
+////////////////////////////////////////
+reset.css では足りない初期化を追加
+////////////////////////////////////////
+*/
+
+body {
+  background: rgb(230, 230, 230);
+  margin: 10px 30px;
+}
+
+p, form {
+  display: inline-block;
+}
+
+.page-title {
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.main-field {
+  background: #fff;
+  height: 400px;
+  width: 300px;
+  padding: 10px;
+  position: relative;
+  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.create-button {
+  position: absolute;
+  top: 10px;
+  right: 30px;
+}
+
+ul {
+  list-style: disc;
+  position: absolute;
+  left: 50px;
+}
+
+ul li {
+  margin-bottom: 10px;
+}
+
+ul li a {
+  font-size: 26px;
+}
+
+.input-field {
+  width: 250px;
+  margin-left: 20px;
+}
+
+.text-field {
+  background: rgb(230, 230, 230);
+  font-size: 30px;
+  width: 100%;
+  margin-bottom: 20px;
+  border-radius: 2%;
+}
+
+.memo-title,
+.memo-content {
+  font-size: 24px;
+  margin-left: 20px;
+}
+
+.memo-title {
+  margin-bottom: 20px;
+}
+
+.bottom-button {
+  position: absolute;
+  left: 0px;
+  bottom: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.button {
+  height: 35px;
+  width: 90px;
+  font-size: 14px;
+  background: rgb(230, 230, 230);
+  border: 2px solid rgb(150, 150, 150);
+  border-radius: 8%;
+}
