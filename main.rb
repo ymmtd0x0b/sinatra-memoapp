@@ -3,7 +3,7 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'erb'
-require 'json'
+require 'pg'
 
 get '/' do
   @memo_list = Memo.all
@@ -54,38 +54,30 @@ patch '/memos/:id' do
 end
 
 module Memo
-  JSON_FILE_NAME = 'memo_data.json'
+  TABLE = 'memo'
+  DB_CONNECTION = PG.connect(host: 'localhost', port: 5432, dbname: 'memo_app', user: 'memoapp_user')
 
   class << self
     def all
-      memo_data = JSON.parse(File.read(JSON_FILE_NAME), symbolize_names: true)
-      memo_data[:memo_list]
+      memo_data = DB_CONNECTION.exec("SELECT * FROM #{TABLE}")
+      memo_data.map { |memo| memo.transform_keys(&:to_sym) }
     end
 
     def find(target_id)
-      memo_data = JSON.parse(File.read(JSON_FILE_NAME), symbolize_names: true)
-      memo_data[:memo_list].find { |memo| memo[:id] == target_id }
+      result = DB_CONNECTION.exec("SELECT * FROM #{TABLE} WHERE id = $1::int", [target_id])
+      result.first.transform_keys(&:to_sym)
     end
 
     def add(title, content)
-      memo_data = JSON.parse(File.read(JSON_FILE_NAME), symbolize_names: true)
-      id = memo_data[:id_counter] += 1
-      memo_data[:memo_list] << { id: id, title: title, content: content }
-      File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_data)) }
+      DB_CONNECTION.exec("INSERT INTO #{TABLE} (title, content) VALUES ($1::varchar, $2::varchar)", [title, content])
     end
 
     def delete(target_id)
-      memo_data = JSON.parse(File.read(JSON_FILE_NAME), symbolize_names: true)
-      memo_data[:memo_list].delete_if { |memo| memo[:id] == target_id }
-      File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_data)) }
+      DB_CONNECTION.exec("DELETE FROM #{TABLE} WHERE id = $1::int", [target_id])
     end
 
     def edit(target_id, title, content)
-      memo_data = JSON.parse(File.read(JSON_FILE_NAME), symbolize_names: true)
-      index = memo_data[:memo_list].find_index { |memo| memo[:id] == target_id }
-      memo_data[:memo_list][index][:title] = title
-      memo_data[:memo_list][index][:content] = content
-      File.open(JSON_FILE_NAME, 'w') { |file| file.write(JSON.pretty_generate(memo_data)) }
+      DB_CONNECTION.exec("UPDATE #{TABLE} SET title = $1::varchar, content = $2::varchar WHERE id = $3::int", [title, content, target_id])
     end
   end
 end
