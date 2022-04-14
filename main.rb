@@ -57,15 +57,16 @@ module Memo
   TABLE = 'memo'
   DB_CONNECTION = PG.connect(host: 'localhost', port: 5432, dbname: 'memo_app', user: 'memoapp_user')
 
+  private_constant :TABLE, :DB_CONNECTION
   class << self
     def all
-      memo_data = DB_CONNECTION.exec("SELECT * FROM #{TABLE}")
-      memo_data.map { |memo| memo.transform_keys(&:to_sym) }
+      memos = DB_CONNECTION.exec("SELECT * FROM #{TABLE}")
+      memos.map { |memo| memo.transform_keys(&:to_sym) }.sort { |a, b| a[:id].to_i <=> b[:id].to_i }
     end
 
     def find(target_id)
-      result = DB_CONNECTION.exec("SELECT * FROM #{TABLE} WHERE id = $1::int", [target_id])
-      result.first.transform_keys(&:to_sym)
+      memo = DB_CONNECTION.exec("SELECT * FROM #{TABLE} WHERE id = $1::int", [target_id])
+      memo.first.transform_keys(&:to_sym)
     end
 
     def add(title, content)
