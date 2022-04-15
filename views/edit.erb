@@ -1,30 +1,14 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="/css/main.css">
-  <title>Edit</title>
-</head>
-<body>
-  <header>
-    <h1 class="page-title">Top</h1>
-  </header>
-  <section class="main-field">
-    <h2>メモアプリ</h2>
-    <%= erb :error_message %>
-    <div class="input-field">
-      <label>タイトル(50文字以内)</label>
-      <input type="text" name="title" value="<%= sanitize(@memo[:title]) %>" form="edit" class="text-field">
-      <label>内容(300文字以内)</label>
-      <textarea name="content" id="" cols="20" rows="6" form="edit" class="text-field"><%= sanitize(@memo[:content]) %></textarea>
-      <div class="bottom-button">
-        <p><a href="/"><input type="button" name="cancel" value="キャンセル" class="button"></a></p>
-        <form method="POST" action="/memos/<%= @memo[:id] %>" id="edit">
-          <input type="hidden" name="_method" value="patch">
-          <p><input type="submit" name="edit" value="確定" class="button"></p>
-        </form>
-      </div>
-    </div>
-  </section>
-</body>
-</html>
+<%= erb :error_message %>
+<div class="input-field">
+  <label>タイトル(50文字以内)</label>
+  <input type="text" name="title" value="<%= sanitize(@memo[:title]) %>" form="edit" class="text-field">
+  <label>内容(300文字以内)</label>
+  <textarea name="content" id="" cols="20" rows="6" form="edit" class="text-field"><%= sanitize(@memo[:content]) %></textarea>
+  <div class="bottom-button">
+    <p><a href="/"><input type="button" name="cancel" value="キャンセル" class="button"></a></p>
+    <form method="POST" action="/memos/<%= @memo[:id] %>" id="edit">
+      <input type="hidden" name="_method" value="patch">
+      <p><input type="submit" name="edit" value="確定" class="button"></p>
+    </form>
+  </div>
+</div>

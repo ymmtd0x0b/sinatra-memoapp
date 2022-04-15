@@ -1,28 +1,12 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="/css/main.css">
-  <title>Top</title>
-</head>
-<body>
-  <header>
-    <h1 class="page-title">New</h1>
-  </header>
-  <section class="main-field">
-    <h2>メモアプリ</h2>
-    <%= erb :error_message %>
-    <div class="input-field">
-      <form method="POST" action="/memos">
-        <label>タイトル(50文字以内)</label>
-        <input type="text" name="title" value="<%= @title %>" class="text-field">
-        <label>内容(300文字以内)</label>
-        <textarea name="content" id="" cols="20" rows="6" class="text-field"><%= @content %></textarea>
-        <div class="bottom-button">
-          <p><input type="submit" value="追加" class="button"></p>
-        </div>
-      </form>
+<%= erb :error_message %>
+<div class="input-field">
+  <form method="POST" action="/memos">
+    <label>タイトル(50文字以内)</label>
+    <input type="text" name="title" value="<%= @memo[:title] unless @memo.nil? %>" class="text-field">
+    <label>内容(300文字以内)</label>
+    <textarea name="content" id="" cols="20" rows="6" class="text-field"><%= @memo[:content] unless @memo.nil? %></textarea>
+    <div class="bottom-button">
+      <p><input type="submit" value="追加" class="button"></p>
     </div>
-  </section>
-</body>
-</html>
+  </form>
+</div>

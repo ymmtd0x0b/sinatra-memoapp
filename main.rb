@@ -6,6 +6,7 @@ require 'erb'
 require 'pg'
 
 get '/' do
+  @title = 'top'
   @memo_list = Memo.all
   erb :top
 end
@@ -15,6 +16,7 @@ get '/memos' do
 end
 
 get '/memos/new' do
+  @title = 'new'
   erb :new
 end
 
@@ -24,13 +26,14 @@ post '/memos' do
     Memo.add(params[:title], params[:content])
     redirect '/'
   else
-    @title = params[:title]
-    @content = params[:content]
+    @title = 'new'
+    @memo = { title: params[:title], content: params[:content] }
     erb :new
   end
 end
 
 get '/memos/:id' do
+  @title = 'show'
   target_id = params[:id].to_i
   @memo = Memo.find(target_id)
   erb :show
@@ -43,6 +46,7 @@ delete '/memos/:id' do
 end
 
 get '/memos/:id/edit' do
+  @title = 'edit'
   target_id = params[:id].to_i
   @memo = Memo.find(target_id)
   erb :edit
@@ -55,6 +59,7 @@ patch '/memos/:id' do
     Memo.edit(target_id, params[:title], params[:content])
     redirect '/'
   else
+    @title = 'edit'
     @memo = { id: params[:id], title: params[:title], content: params[:content] }
     erb :edit
   end
