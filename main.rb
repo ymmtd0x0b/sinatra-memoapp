@@ -68,8 +68,6 @@ end
 module Memo
   TABLE = 'memo'
   DB_CONNECTION = PG.connect(host: 'localhost', port: 5432, dbname: 'memo_app', user: 'memoapp_user')
-  MAX_TITLE_LENGTH = 50
-  MAX_CONTENT_LENGTH = 300
 
   private_constant :TABLE, :DB_CONNECTION
   class << self
@@ -103,7 +101,7 @@ end
 
 def validate(title, content)
   error = {}
-  error[:title] = "タイトルが長すぎます(50文字以内)" if title.length > 50
-  error[:content] = "内容が長すぎます(300文字以内)" if content.length > 300
+  error[:title] = 'タイトルが長すぎます(50文字以内)' if title.length > 50
+  error[:content] = '内容が長すぎます(300文字以内)' if content.length > 300
   error
 end
