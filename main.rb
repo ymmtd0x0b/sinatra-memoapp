@@ -7,7 +7,6 @@ require 'pg'
 
 get '/' do
   @memo_list = Memo.all
-
   erb :top
 end
 
@@ -20,42 +19,52 @@ get '/memos/new' do
 end
 
 post '/memos' do
-  Memo.add(params[:title], params[:content])
-
-  redirect '/'
+  @error = validate(params[:title], params[:content])
+  if @error.empty?
+    Memo.add(params[:title], params[:content])
+    redirect '/'
+  else
+    @title = params[:title]
+    @content = params[:content]
+    erb :new
+  end
 end
 
 get '/memos/:id' do
   target_id = params[:id].to_i
   @memo = Memo.find(target_id)
-
   erb :show
 end
 
 delete '/memos/:id' do
   target_id = params[:id].to_i
   Memo.delete(target_id)
-
   redirect '/'
 end
 
 get '/memos/:id/edit' do
   target_id = params[:id].to_i
   @memo = Memo.find(target_id)
-
   erb :edit
 end
 
 patch '/memos/:id' do
-  target_id = params[:id].to_i
-  Memo.edit(target_id, params[:title], params[:content])
-
-  redirect '/'
+  @error = validate(params[:title], params[:content])
+  if @error.empty?
+    target_id = params[:id].to_i
+    Memo.edit(target_id, params[:title], params[:content])
+    redirect '/'
+  else
+    @memo = { id: params[:id], title: params[:title], content: params[:content] }
+    erb :edit
+  end
 end
 
 module Memo
   TABLE = 'memo'
   DB_CONNECTION = PG.connect(host: 'localhost', port: 5432, dbname: 'memo_app', user: 'memoapp_user')
+  MAX_TITLE_LENGTH = 50
+  MAX_CONTENT_LENGTH = 300
 
   private_constant :TABLE, :DB_CONNECTION
   class << self
@@ -85,4 +94,11 @@ end
 
 def sanitize(input_data)
   ERB::Util.html_escape(input_data)
+end
+
+def validate(title, content)
+  error = {}
+  error[:title] = "タイトルが長すぎます(50文字以内)" if title.length > 50
+  error[:content] = "内容が長すぎます(300文字以内)" if content.length > 300
+  error
 end

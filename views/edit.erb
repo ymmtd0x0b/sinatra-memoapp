@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="/css/main.css">
-  <title>Show</title>
+  <title>Edit</title>
 </head>
 <body>
   <header>
@@ -11,9 +11,12 @@
   </header>
   <section class="main-field">
     <h2>メモアプリ</h2>
+    <%= erb :error_message %>
     <div class="input-field">
+      <label>タイトル(50文字以内)</label>
       <input type="text" name="title" value="<%= sanitize(@memo[:title]) %>" form="edit" class="text-field">
-      <textarea name="content" id="" cols="20" rows="5" form="edit" class="text-field"><%= sanitize(@memo[:content]) %></textarea>
+      <label>内容(300文字以内)</label>
+      <textarea name="content" id="" cols="20" rows="6" form="edit" class="text-field"><%= sanitize(@memo[:content]) %></textarea>
       <div class="bottom-button">
         <p><a href="/"><input type="button" name="cancel" value="キャンセル" class="button"></a></p>
         <form method="POST" action="/memos/<%= @memo[:id] %>" id="edit">

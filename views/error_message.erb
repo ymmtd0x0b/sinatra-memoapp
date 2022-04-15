@@ -1,0 +1,7 @@
+<% unless @error.nil? %>
+  <div class='flash'>
+  <% @error.each do |key, value| %>
+    <p class='error-message'><%= value %></p>
+  <% end %>
+  </div>
+<% end %>
