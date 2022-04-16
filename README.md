@@ -42,8 +42,6 @@ psql -U postgres
 
 ``` sql
 CREATE DATABASE memo_app;
-
-# 作成したデータベースへ切り替え
 \c memo_app
 ```
 
