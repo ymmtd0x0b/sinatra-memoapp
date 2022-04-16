@@ -5,26 +5,26 @@
 必要なら作業用ディレクトリを作成する
 
 ``` bash
-$ mkdir <ディレクトリ名>
-$ cd <作成したディレクトリ名>
+mkdir <ディレクトリ名>
+cd <作成したディレクトリ名>
 ```
 
 クローンを作成する
 
 ``` bash
-$ git clone https://github.com/ymmtd0x0b/sinatra-memoapp.git
+git clone https://github.com/ymmtd0x0b/sinatra-memoapp.git
 ```
 
 アプリのあるフォルダへ移動する
 
 ``` bash
-$ cd ./sinatra_memoapp
+cd ./sinatra_memoapp
 ```
 
 アプリの動作に必要なGemをインストールする
 
 ``` ruby
-$ bundle install
+bundle install
 ```
 
 ## 事前準備
@@ -34,26 +34,23 @@ $ bundle install
 1. 管理ユーザーでPostgreSQLにログイン
 
 ``` bash
-$ su - postgres
-$ psql -U postgres
-
-# このような表示になればOK
-postgres=#
+su - postgres
+psql -U postgres
 ```
 
 2. メモアプリ用のデータベースを作成
 
 ``` sql
-postgres=# CREATE DATABASE memo_app;
+CREATE DATABASE memo_app;
 
 # 作成したデータベースへ切り替え
-postgres=# \c memo_app
+\c memo_app
 ```
 
 3. テーブルを作成
 
 ``` sql
-memo_app=# CREATE TABLE memo (
+CREATE TABLE memo (
 id SERIAL PRIMARY KEY NOT NULL,
 title VARCHAR(50) NOT NULL,
 content VARCHAR(300) NOT NULL);
@@ -63,41 +60,43 @@ content VARCHAR(300) NOT NULL);
 アプリ側からデータベースを操作するためのユーザーを作成する
 
 ``` sql
-postgres=# CREATE ROLE memoapp_user LOGIN PASSWORD '[password]';
+CREATE ROLE memoapp_user LOGIN PASSWORD '[password]';
 ```
 
 5.  作成したユーザーにアクセス権を付与( 今回はテーブルとシーケンスにアクセス権が必要 )
 
 ``` sql
-memo_app=# GRANT SELECT, UPDATE, INSERT, DELETE ON memo TO memoapp_user;
-memo_app=# GRANT SELECT, UPDATE ON SEQUENCE memo_id_seq TO memoapp_user;
+GRANT SELECT, UPDATE, INSERT, DELETE ON memo TO memoapp_user;
+GRANT SELECT, UPDATE ON SEQUENCE memo_id_seq TO memoapp_user;
 ```
 
-6. `.pgpassファイル`を作成する
+6. 一度PostgreSQLを抜けるか、別途ターミナルを立ち上げてホームへ戻る
+
+7. テキストエディタにて`.pgpass`を開く(以下、例としてvimを使用)
 
 ``` bash
-# 一度PostgreSQLを抜けるか、別途ターミナルを立ち上げてホームへ戻る
-$ cd ~
-$ vim .pgpass
+cd ~
+vim .pgpass
 ```
 
+8. `.pgpass`に以下をコピー＆ペーストする
+
 ```
-# .pgpassに以下をコピー＆ペーストする
 localhost:5432:memo_app:memoapp_user:[4.で指定したパスワード]
 ```
 
-7. `.pgassファイル`の権限を変更する
-以下のようにすることで自分自身のアカウントでログインしてアプリを起動した場合のみログイン可能になるので、( 自分のアカウントが乗っ取られる以外の )不正なログインを防止できる
+9. `.pgassファイル`の権限を変更する
+以下のようにすることで自分自身のアカウントでログインしてアプリを起動した場合のみログイン可能になるので、不正なログインを防止できる
 
 ``` bash
-$ chmod 600 .pgpass
+chmod 600 .pgpass
 ```
 
 ## 起動
 
 以下のコマンドでアプリを起動する
 ``` ruby
-$ bundle exec ruby main.rb
+bundle exec ruby main.rb
 ```
 
 http://localhost:4567 にアクセスするかブラウザのURLへ直接入力する
