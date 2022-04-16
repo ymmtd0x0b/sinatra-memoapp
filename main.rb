@@ -7,7 +7,7 @@ require 'pg'
 
 get '/' do
   @title = 'top'
-  @memo_list = Memo.all
+  @memos = Memo.all
   erb :top
 end
 

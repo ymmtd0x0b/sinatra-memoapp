@@ -1,6 +1,6 @@
 <p><a href="/memos/new"><input type="button" name="new" value="新規作成" class="create-button button"></a></p>
 <ul>
-  <% @memo_list.each do |memo| %>
+  <% @memos.each do |memo| %>
     <li><a href="/memos/<%= memo[:id] %>"><%= sanitize(memo[:title]) %></a></li>
   <% end %>
 </ul>
