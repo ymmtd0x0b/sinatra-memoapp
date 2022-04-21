@@ -1,12 +1,9 @@
-<%= erb :error_message %>
+<%= erb :error_message, locals: { errors: @memo.errors } %>
 <div class="input-field">
   <form method="POST" action="/memos">
-    <label>タイトル(50文字以内)</label>
-    <input type="text" name="title" value="<%= @memo[:title] unless @memo.nil? %>" class="text-field">
-    <label>内容(300文字以内)</label>
-    <textarea name="content" id="" cols="20" rows="6" class="text-field"><%= @memo[:content] unless @memo.nil? %></textarea>
+    <%= erb :form %>
     <div class="bottom-button">
-      <p><input type="submit" value="追加" class="button"></p>
+      <p><input type="submit" class="button"></p>
     </div>
   </form>
 </div>

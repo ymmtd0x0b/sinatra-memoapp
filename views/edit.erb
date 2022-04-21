@@ -1,14 +1,11 @@
-<%= erb :error_message %>
+<%= erb :error_message, locals: { errors: @memo.errors } %>
 <div class="input-field">
-  <label>タイトル(50文字以内)</label>
-  <input type="text" name="title" value="<%= sanitize(@memo[:title]) %>" form="edit" class="text-field">
-  <label>内容(300文字以内)</label>
-  <textarea name="content" id="" cols="20" rows="6" form="edit" class="text-field"><%= sanitize(@memo[:content]) %></textarea>
-  <div class="bottom-button">
-    <p><a href="/"><input type="button" name="cancel" value="キャンセル" class="button"></a></p>
-    <form method="POST" action="/memos/<%= @memo[:id] %>" id="edit">
+  <form method="POST" action="/memos/<%= @memo.id %>">
+    <%= erb :form %>
+    <div class="bottom-button">
+      <p><a href="/"><input type="button" value="キャンセル" class="button"></a></p>
       <input type="hidden" name="_method" value="patch">
-      <p><input type="submit" name="edit" value="確定" class="button"></p>
+      <p><input type="submit" value="確定" class="button"></p>
     </form>
   </div>
 </div>
