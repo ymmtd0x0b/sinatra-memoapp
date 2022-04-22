@@ -1,25 +1,9 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="/css/main.css">
-  <title>Top</title>
-</head>
-<body>
-  <header>
-    <h1 class="page-title">New</h1>
-  </header>
-  <section class="main-field">
-    <h2>メモアプリ</h2>
-    <div class="input-field">
-      <form method="POST" action="/memos">
-        <input type="text" name="title" class="text-field">
-        <textarea name="content" id="" cols="20" rows="5" class="text-field"></textarea>
-        <div class="bottom-button">
-          <p><input type="submit" value="追加" class="button"></p>
-        </div>
-      </form>
+<%= erb :error_message, locals: { errors: @memo.errors } %>
+<div class="input-field">
+  <form method="POST" action="/memos">
+    <%= erb :form, locals: { title: @memo.title, content: @memo.content } %>
+    <div class="bottom-button">
+      <p><input type="submit" class="button"></p>
     </div>
-  </section>
-</body>
-</html>
+  </form>
+</div>

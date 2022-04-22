@@ -1,0 +1,7 @@
+<% if locals[:errors] %>
+  <div class='flash'>
+  <% locals[:errors].each do |error_message| %>
+    <p class='error-message'><%= error_message %></p>
+  <% end %>
+  </div>
+<% end %>

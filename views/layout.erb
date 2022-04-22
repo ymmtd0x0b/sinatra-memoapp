@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/css/main.css">
+  <title><%= @title %></title>
+</head>
+<body>
+  <header>
+    <h1 class="page-title"><%= @title %></h1>
+  </header>
+  <section class="main-field">
+    <h2>メモアプリ</h2>
+    <%= yield %>
+  </section>
+</body>
+</html>
