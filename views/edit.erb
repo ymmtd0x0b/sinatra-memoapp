@@ -1,7 +1,7 @@
 <%= erb :error_message, locals: { errors: @memo.errors } %>
 <div class="input-field">
   <form method="POST" action="/memos/<%= @memo.id %>">
-    <%= erb :form %>
+    <%= erb :form, locals: { title: @memo.title, content: @memo.content } %>
     <div class="bottom-button">
       <p><a href="/"><input type="button" value="キャンセル" class="button"></a></p>
       <input type="hidden" name="_method" value="patch">
